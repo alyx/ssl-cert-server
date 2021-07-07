@@ -8,7 +8,7 @@ import (
 	"errors"
 	"strings"
 
-	"golang.org/x/crypto/acme/autocert"
+	"github.com/alyx/x/autocert"
 )
 
 func NewDirCache(cacheDir string) (autocert.Cache, error) {

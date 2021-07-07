@@ -16,7 +16,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"golang.org/x/crypto/acme/autocert"
+	"github.com/alyx/x/autocert"
 )
 
 var (

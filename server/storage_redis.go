@@ -2,8 +2,9 @@ package server
 
 import (
 	"context"
+
+	"github.com/alyx/x/autocert"
 	"github.com/go-redis/redis/v8"
-	"golang.org/x/crypto/acme/autocert"
 )
 
 func NewRedisCache(redisURL string) (autocert.Cache, error) {
