@@ -16,6 +16,9 @@ managed:
 lets_encrypt:
   staging: false
   force_rsa: false
+  directory_url: "foo"
+  eab_kid: ""
+  eab_key: ""
   renew_before: 30
   email: "abc@example.com"
   domains:

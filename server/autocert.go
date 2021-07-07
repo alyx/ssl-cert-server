@@ -16,8 +16,8 @@ import (
 	"regexp"
 	"time"
 
+	"github.com/alyx/x/autocert"
 	"golang.org/x/crypto/acme"
-	"golang.org/x/crypto/acme/autocert"
 )
 
 const stagingDirectoryURL = "https://acme-staging-v02.api.letsencrypt.org/directory"
@@ -98,6 +98,9 @@ func GetManager() *Manager {
 				HostPolicy:  Cfg.LetsEncrypt.HostPolicy,
 			},
 			ForceRSA: Cfg.LetsEncrypt.ForceRSA,
+		}
+		if Cfg.LetsEncrypt.EABKID != "" && Cfg.LetsEncrypt.EABKey != "" {
+			manager.m.ExternalAccountBinding = &acme.ExternalAccountBinding{KID: Cfg.LetsEncrypt.EABKID, Key: []byte(Cfg.LetsEncrypt.EABKey)}
 		}
 	}
 	return manager

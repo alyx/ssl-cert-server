@@ -10,8 +10,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/alyx/x/autocert"
 	"golang.org/x/crypto/acme"
-	"golang.org/x/crypto/acme/autocert"
 	"gopkg.in/yaml.v2"
 )
 
@@ -57,7 +57,12 @@ type config struct {
 
 		// DirectoryURL will be set to Let's Encrypt staging api if the
 		// option Staging is true, else it will be the production api.
-		DirectoryURL string `yaml:"-"`
+		DirectoryURL string `yaml:"directory_url"`
+
+		// EABKID is the ExternalAccountBinding Key ID
+		EABKID string `yaml:"eab_kid"`
+		// EABKey is the ExternalAccountBinding HMAC key
+		EABKey string `yaml:"eab_key"`
 	} `yaml:"lets_encrypt"`
 
 	SelfSigned struct {
@@ -78,10 +83,13 @@ func (p *config) setupDefaultOptions() {
 	setDefault(&Cfg.Storage.Redis.Addr, "127.0.0.1:6379")
 
 	setDefault(&Cfg.LetsEncrypt.RenewBefore, 30)
-	if Cfg.LetsEncrypt.Staging {
-		Cfg.LetsEncrypt.DirectoryURL = stagingDirectoryURL
-	} else {
-		Cfg.LetsEncrypt.DirectoryURL = acme.LetsEncryptURL
+
+	if Cfg.LetsEncrypt.DirectoryURL == "" {
+		if Cfg.LetsEncrypt.Staging {
+			Cfg.LetsEncrypt.DirectoryURL = stagingDirectoryURL
+		} else {
+			Cfg.LetsEncrypt.DirectoryURL = acme.LetsEncryptURL
+		}
 	}
 
 	setDefault(&Cfg.SelfSigned.ValidDays, 365)
